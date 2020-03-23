@@ -1,44 +1,27 @@
 import React, {Component} from 'react';
-import { useHistory, Route, Router, BrowserRouter, Redirect} from 'react-router-dom';
-import logo from './logo.svg';
-import Box from '@material-ui/core/Box';
-import { Button } from 'reactstrap';
-import { browserHistory } from 'react-router';
+import { useHistory, Route, Router, BrowserRouter, Redirect,HashRouter} from 'react-router-dom';
+import { Provider } from 'react-redux'
 import './App.css';
+import Signup from './components/signup'
+import Room from './components/room'
+import Chat from './components/chat'
+import Online from './components/online'
+import store from './stores/store'
+
 class App extends Component {
-    state = {
-        redirect: false
-    }
-    setRedirect = () => {
-        this.setState({
-            redirect: true
-        })
-    }
-    renderRedirect = () => {
-        if (this.state.redirect) {
-          //this.props.history.push("/room");
-            return <Redirect to='/room' />
-        }
-    }
 
     render() {
         return (
-            <BrowserRouter>
-                <div>
-                    <form>
-                        <label>
-                            Name:
-                            <input type="text" name="name"/>
-                        </label>
-                        <Route>
-                        {this.renderRedirect()}
-                        </Route>
-                        <button type="button" onClick={this.setRedirect.bind()}>
-                        Submit
-                    </button>
-                    </form>
-                </div>
-            </BrowserRouter>
+           <Provider store={store}>
+               <HashRouter>
+                   <div>
+                       <Chat />
+                       <Route path='/signup'><Signup/></Route>
+                       <Route path='/room'><Room/></Route>
+                       <Route path='/online'><Online /></Route>
+                   </div>
+                </HashRouter>
+           </Provider>
         )
     }
 }
